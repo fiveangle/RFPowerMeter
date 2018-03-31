@@ -32,9 +32,6 @@ byte m4 = 0;
 float sensorValue = 0;
 float sensorValue2 = 0;
 
-
-
-
 #define BUZ_ON   PORTB |= _BV(5);
 #define BUZ_OFF  PORTB &= ~_BV(5);
 
@@ -42,13 +39,11 @@ float sensorValue2 = 0;
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
-
 #include <EEPROMex.h>
 double aa;
 double bb;
 
 #define SSD1306_128_64
-
 #undef SSD1306_LCDHEIGHT // to work-around redefinition warning from Adafruit_GFX library define
 #define SSD1306_LCDHEIGHT 64
 
@@ -59,7 +54,6 @@ Adafruit_SSD1306 display(OLED_RESET);
 #define XPOS 0
 #define YPOS 1
 #define DELTAY 2
-
 
 #define LOGO16_GLCD_HEIGHT 16
 #define LOGO16_GLCD_WIDTH  16
@@ -86,124 +80,19 @@ static const unsigned char PROGMEM logo16_glcd_bmp[] =
 #error("SSD1306_LCDHEIGHT != 64. Height incorrect, please fix Adafruit_SSD1306.h!");
 #endif
 
-void setup()   {
-
+void setup() {
   pinMode(9, OUTPUT);
 
   //BUZ_ON;
   BUZ_OFF;
-delay(400);
+  delay(400);
   Serial.begin(9600);
-   //чето не всегда стартует
+  //чето не всегда стартует
   // by default, we'll generate the high voltage from the 3.3v line internally! (neat!)
   display.begin(SSD1306_SWITCHCAPVCC, 0x3c);  // initialize with the I2C addr 0x3D (for the 128x64)
-  // init done
-
-  // Show image buffer on the display hardware.
-  // Since the buffer is intialized with an Adafruit splashscreen
-  // internally, this will display the splashscreen.
-  //display.display();
   delay(500);
 
   // Clear the buffer.
-  display.clearDisplay();
-
-  // draw a single pixel
-  //display.drawPixel(10, 10, WHITE);
-  // Show the display buffer on the hardware.
-  // NOTE: You _must_ call display after making any drawing commands
-  // to make them visible on the display hardware!
-
-
-
-
-  //display.display();
-  //delay(20000);
-  //display.clearDisplay();
-
-  // draw many lines
-  //testdrawline();
-  //display.display();
-  //delay(2000);
-  //display.clearDisplay();
-
-  // draw rectangles
-  //testdrawrect();
-  //display.display();
-  //delay(2000);
-  //display.clearDisplay();
-
-  // draw multiple rectangles
-  //testfillrect();
-  //display.display();
-  //delay(2000);
-  //display.clearDisplay();
-
-  // draw mulitple circles
-  //testdrawcircle();
-  //display.display();
-  //delay(2000);
-  //display.clearDisplay();
-
-  // draw a white circle, 10 pixel radius
-  //display.fillCircle(display.width()/2, display.height()/2, 10, WHITE);
-  //display.display();
-  //delay(2000);
-  //display.clearDisplay();
-
-  //testdrawroundrect();
-  //delay(2000);
-  //display.clearDisplay();
-
-  //testfillroundrect();
-  //delay(2000);
-  //display.clearDisplay();
-
-  //testdrawtriangle();
-  //delay(2000);
-  //display.clearDisplay();
-
-  //testfilltriangle();
-  //delay(2000);
-  //display.clearDisplay();
-
-  // draw the first ~12 characters in the font
-  //testdrawchar();
-  //display.display();
-  //delay(2000);
-  //display.clearDisplay();
-
-  // draw scrolling text
-  //testscrolltext();
-  //delay(2000);
-  //display.clearDisplay();
-
-  // text display tests
-  //display.setTextSize(1);
-  //display.setTextColor(WHITE);
-  //display.setCursor(0,0);
-  //display.println("Hello, world!");
-  //display.setTextColor(BLACK, WHITE); // 'inverted' text
-  //display.println(3.141592);
-  //display.setTextSize(2);
-  //display.setTextColor(WHITE);
-  //display.print("0x"); display.println(0xDEADBEEF, HEX);
-  //display.display();
-  //delay(2000);
-
-  // miniature bitmap display
-  //display.clearDisplay();
-  //display.drawBitmap(30, 16,  logo16_glcd_bmp, 16, 16, 1);
-  //display.display();
-
-  // invert the display
-  //display.invertDisplay(true);
-  //delay(1000);
-  //display.invertDisplay(false);
-  //delay(1000);
-
-  // draw a bitmap icon and 'animate' movement
-  //testdrawbitmap(logo16_glcd_bmp, LOGO16_GLCD_HEIGHT, LOGO16_GLCD_WIDTH);
   display.clearDisplay(); display.display();
   display.setTextSize(2);
   display.setTextColor(WHITE);
@@ -216,12 +105,11 @@ delay(400);
   display.setCursor(30, 45);
   display.println("v.01 25");
 
-display.setCursor(0, 57);
-display.print("serial:a000");
-display.println(EEPROM.readInt(0));
-//display.println("serial:00001");
-//EEPROM.writeInt(0,3);
-
+  display.setCursor(0, 57);
+  display.print("serial:a000");
+  display.println(EEPROM.readInt(0));
+  //display.println("serial:00001");
+  //EEPROM.writeInt(0,3);
 
   display.display();
   //display.invertDisplay(true);
@@ -241,89 +129,71 @@ display.println(EEPROM.readInt(0));
   pinMode(21, OUTPUT);
   digitalWrite(21, LOW);
   
-  
   sensorValue = analogRead(A0);
   sensorValue = 1024;
 
+  if (digitalRead(4) == LOW && digitalRead(6) == LOW){
+  display.setCursor(0, 0);
+  display.clearDisplay();display.println("Call Menu");display.display();
 
-//call menu
-//float a;
-//float b;
+  while(1) {
+    Serial.println("MENU"); //Prompt User for input
+    while (Serial.available()==0) {}           //Wait for user input
+    Serial.read() ;
 
-if (digitalRead(4) == LOW && digitalRead(6) == LOW){
-display.setCursor(0, 0);
-display.clearDisplay();display.println("Call Menu");display.display();
+    //serial
+    //Serial.println(EEPROM.getAddress(sizeof(int)));//0
+    //menu
+    //Serial.println(EEPROM.getAddress(sizeof(byte)));//2
+    //Serial.println(EEPROM.getAddress(sizeof(byte)));//3
+    //Serial.println(EEPROM.getAddress(sizeof(byte)));//4
+    //Serial.println(EEPROM.getAddress(sizeof(byte)));//5
+    //call start
+    //Serial.println(EEPROM.getAddress(sizeof(double)));//6
 
-char junk = ' ';
-while(1){
+    Serial.println("------------------");
+    aa=EEPROM.readDouble(10);Serial.print("Reg 10 a27=");printDouble2(aa,5);Serial.println("");
+    bb=EEPROM.readDouble(15);Serial.print("Reg 15 b27=");printDouble2(bb,5);Serial.println("");
 
-  Serial.println("MENU"); //Prompt User for input
-  while (Serial.available()==0) {             //Wait for user input
+    aa=EEPROM.readDouble(20);Serial.print("Reg 20 a144=");printDouble2(aa,5);Serial.println("");
+    bb=EEPROM.readDouble(25);Serial.print("Reg 25 b144=");printDouble2(bb,5);Serial.println("");
+
+    aa=EEPROM.readDouble(30);Serial.print("Reg 30 a433=");printDouble2(aa,5);Serial.println("");
+    bb=EEPROM.readDouble(35);Serial.print("Reg 35 b433=");printDouble2(bb,5);Serial.println("");
+
+    aa=EEPROM.readDouble(40);Serial.print("Reg 40 a868=");printDouble2(aa,5);Serial.println("");
+    bb=EEPROM.readDouble(45);Serial.print("Reg 45 b868=");printDouble2(bb,5);Serial.println("");
+
+    aa=EEPROM.readDouble(50);Serial.print("Reg 50 a915=");printDouble2(aa,5);Serial.println("");
+    bb=EEPROM.readDouble(55);Serial.print("Reg 55 b915=");printDouble2(bb,5);Serial.println("");
+
+    aa=EEPROM.readDouble(60);Serial.print("Reg 60 a1200=");printDouble2(aa,5);Serial.println("");
+    bb=EEPROM.readDouble(65);Serial.print("Reg 65 b1200=");printDouble2(bb,5);Serial.println("");
+
+    aa=EEPROM.readDouble(70);Serial.print("Reg 70 a2400=");printDouble2(aa,5);Serial.println("");
+    bb=EEPROM.readDouble(75);Serial.print("Reg 75 b2400=");printDouble2(bb,5);Serial.println("");
+
+    aa=EEPROM.readDouble(80);Serial.print("Reg 80 a5800=");printDouble2(aa,5);Serial.println("");
+    bb=EEPROM.readDouble(85);Serial.print("Reg 85 b5800=");printDouble2(bb,5);Serial.println("");
+
+    Serial.println("------------------");
+      
+    Serial.println("Enter Reg");
+    while (Serial.available()==0)  {}
+    int tmp1=Serial.parseInt();
+    Serial.read() ;
+
+    Serial.print("reg =");Serial.println(tmp1, DEC);
+
+    Serial.println("Enter call=");      //Prompt User for input
+    while (Serial.available()==0)  {}
+    aa=Serial.parseFloat();
+    EEPROM.writeDouble(tmp1,aa);   
+    Serial.print("= "); Serial.println(aa, DEC);
+    while (Serial.available() > 0) {  // .parseFloat() can leave non-numeric characters
+      Serial.read();      // clear the keyboard buffer
+    }
   }
-  junk = Serial.read() ;
-
-//serial
-//Serial.println(EEPROM.getAddress(sizeof(int)));//0
-//menu
-//Serial.println(EEPROM.getAddress(sizeof(byte)));//2
-//Serial.println(EEPROM.getAddress(sizeof(byte)));//3
-//Serial.println(EEPROM.getAddress(sizeof(byte)));//4
-//Serial.println(EEPROM.getAddress(sizeof(byte)));//5
-//call start
-//Serial.println(EEPROM.getAddress(sizeof(double)));//6
-
-Serial.println("------------------");
-aa=EEPROM.readDouble(10);Serial.print("Reg 10 a27=");printDouble2(aa,5);Serial.println("");
-bb=EEPROM.readDouble(15);Serial.print("Reg 15 b27=");printDouble2(bb,5);Serial.println("");
-
-aa=EEPROM.readDouble(20);Serial.print("Reg 20 a144=");printDouble2(aa,5);Serial.println("");
-bb=EEPROM.readDouble(25);Serial.print("Reg 25 b144=");printDouble2(bb,5);Serial.println("");
-
-aa=EEPROM.readDouble(30);Serial.print("Reg 30 a433=");printDouble2(aa,5);Serial.println("");
-bb=EEPROM.readDouble(35);Serial.print("Reg 35 b433=");printDouble2(bb,5);Serial.println("");
-
-aa=EEPROM.readDouble(40);Serial.print("Reg 40 a868=");printDouble2(aa,5);Serial.println("");
-bb=EEPROM.readDouble(45);Serial.print("Reg 45 b868=");printDouble2(bb,5);Serial.println("");
-
-aa=EEPROM.readDouble(50);Serial.print("Reg 50 a915=");printDouble2(aa,5);Serial.println("");
-bb=EEPROM.readDouble(55);Serial.print("Reg 55 b915=");printDouble2(bb,5);Serial.println("");
-
-aa=EEPROM.readDouble(60);Serial.print("Reg 60 a1200=");printDouble2(aa,5);Serial.println("");
-bb=EEPROM.readDouble(65);Serial.print("Reg 65 b1200=");printDouble2(bb,5);Serial.println("");
-
-aa=EEPROM.readDouble(70);Serial.print("Reg 70 a2400=");printDouble2(aa,5);Serial.println("");
-bb=EEPROM.readDouble(75);Serial.print("Reg 75 b2400=");printDouble2(bb,5);Serial.println("");
-
-aa=EEPROM.readDouble(80);Serial.print("Reg 80 a5800=");printDouble2(aa,5);Serial.println("");
-bb=EEPROM.readDouble(85);Serial.print("Reg 85 b5800=");printDouble2(bb,5);Serial.println("");
-
-
-
-
-Serial.println("------------------");
-  
-Serial.println("Enter Reg");
-while (Serial.available()==0)  {}
-int tmp1=Serial.parseInt();
-junk = Serial.read() ;
-
-    
-Serial.print("reg =");Serial.println(tmp1, DEC);
-
-  
-  Serial.println("Enter call=");      //Prompt User for input
-  while (Serial.available()==0)  {}
-  aa=Serial.parseFloat();
-  EEPROM.writeDouble(tmp1,aa);   
-  Serial.print("= "); Serial.println(aa, DEC);
-      while (Serial.available() > 0)  // .parseFloat() can leave non-numeric characters
-    { junk = Serial.read() ; }      // clear the keyboard buffer
-
-
-
-
-
-}
 }
 
 
@@ -341,45 +211,35 @@ Serial.print("reg =");Serial.println(tmp1, DEC);
     }
   }
 
-
   /////buz mode
   if (digitalRead(4) == LOW) {
     display.clearDisplay(); 
-      display.setTextSize(2);
+    display.setTextSize(2);
     display.setCursor(10, 10);
-  display.println("Find Mode");
-      display.display();
+    display.println("Find Mode");
+    display.display();
       
     word i2;
     word d=50;
     word dd;
     while (1) {
-      
       word i = analogRead(A0);
       dd=150;
 
-      if (i<i2){
+      if (i<i2) {
         d=i2-i;
-      if (d > 100){d=100;}
-      //d=101-d;
-      d=d/10;
-      //if (i < 120) {
-     //   i = 120;
-     // }
-      //i = i - 120;
-      //i = i / 5;
-      //i=i2=i;
-      if (d==1){dd=80;}
-      if (d==2){dd=40;}
-      if (d==3){dd=20;}
-      if (d==4){dd=10;}
-      if (d==5){dd=6;}
-      if (d==6){dd=5;}
-      if (d==7){dd=4;}
-      if (d==8){dd=3;}
-      if (d==9){dd=2;}
-      if (d==10){dd=1;}
-      
+        if (d > 100){d=100;}
+        d=d/10;
+        if (d==1){dd=80;}
+        if (d==2){dd=40;}
+        if (d==3){dd=20;}
+        if (d==4){dd=10;}
+        if (d==5){dd=6;}
+        if (d==6){dd=5;}
+        if (d==7){dd=4;}
+        if (d==8){dd=3;}
+        if (d==9){dd=2;}
+        if (d==10){dd=1;} 
       }
       display.setCursor(40, 30);
       display.setTextColor(WHITE, BLACK);
@@ -392,7 +252,6 @@ Serial.print("reg =");Serial.println(tmp1, DEC);
       BUZ_ON;
       delay(10);
       BUZ_OFF;
-      //if i
       delay(dd);
     }
   }
@@ -407,7 +266,7 @@ Serial.print("reg =");Serial.println(tmp1, DEC);
       display.setTextSize(3);
       display.setCursor(0, 0);
       //display.print(analogRead(A0));
-sensorValue=1023;
+      sensorValue=1023;
       for (int i = 0; i <= 800; i++) {
         //delay(150);
         sensorValue2 = analogRead(A0);
@@ -417,20 +276,15 @@ sensorValue=1023;
 
       display.setCursor(0, 32);
       display.print(analogRead(A0));
-    
-    display.setTextSize(1);
-    display.setCursor(0, 57);
-    display.print("raw max/raw");
+
+      display.setTextSize(1);
+      display.setCursor(0, 57);
+      display.print("raw max/raw");
       delay(350);
       display.display();
     }
   }
-
-
-
-
 }
-
 
 void loop() {
   readee();
@@ -475,13 +329,11 @@ void loop() {
     display.print("MM");
   }
 
-
   display.setCursor(0, 18);
   display.print("Attn dBm");
   display.print(m3);
 
-
-//refresh only end line
+  //refresh only end line
   while (1) {
     display.setTextSize(2);
     display.setCursor(0, 39);
@@ -494,7 +346,8 @@ void loop() {
     }
 
     display.setTextColor(WHITE, BLACK); // 'inverted' text
-    display.setCursor(40, 39); display.println("       "); //display.display();
+    display.setCursor(40, 39);
+    display.println("       "); //display.display();
     display.setCursor(40, 39);
     //float sensorValue = analogRead(A0);// read the input on analog pin 0:
 
@@ -522,13 +375,11 @@ void loop() {
         
         if (sensorValue2 < sensorValue){sensorValue=sensorValue2;}
         }
-      
-      //if (sensorValue2 < sensorValue) {
-      //  sensorValue = sensorValue2;
-      //}
+
+        //if (sensorValue2 < sensorValue) {
+        //  sensorValue = sensorValue2;
+        //}
     }
-
-
 
     //float voltage1 = sensorValue * (3.327 / 1023.0);
     //voltage1=voltage1+10;
@@ -586,7 +437,7 @@ void loop() {
     //dBm=dBm+15;
     dBm = dBm + m3;
     double Pm = pow( 10.0, (dBm) / 10.0); //pwr in mW
-    double Pw = pow( 10.0, (dBm - 30) / 10.0); //pwr in W
+    //double Pw = pow( 10.0, (dBm - 30) / 10.0); //pwr in W
 
     //display.println(dBm);
     //display.println(Pm);
@@ -601,7 +452,6 @@ void loop() {
     }
     //if (m4==0){analogReference(INTERNAL); display.print((analogRead(A0)*25.6)/1023);}
     //if (m4==0){analogReference(INTERNAL); display.print(analogRead(A0));delay(350);}
-
 
     if (digitalRead(5) == LOW) {
       menu();
@@ -629,19 +479,10 @@ void loop() {
     else
     {display.print("          ");}
 
-    
-    
     display.display();
     delay(50);
   }
-
-
-
 }
-
-
-
-
 
 void menu(void) {
   sensorValue2 = 0; //.fix выход из меню
@@ -657,33 +498,30 @@ void menu(void) {
     //display.print(m1);
     display.setTextColor(BLACK, WHITE);
  
-  
-  if (m1 == 0) {
-    display.print("27mhz  ");
-  }
-  if (m1 == 1) {
-    display.print("144mhz ");
-  }
-  if (m1 == 2) {
-    display.print("433mhz ");
-  }
-  if (m1 == 3) {
-    display.print("868mhz ");
-  }
-  if (m1 == 4) {
-    display.print("915mhz ");
-  }
-  if (m1 == 5) {
-    display.print("1200mhz");
-  }
-  if (m1 == 6) {
-    display.print("2400mhz");
-  }
-  if (m1 == 7) {
-    display.print("5800mhz");
-  }
-
-
+    if (m1 == 0) {
+      display.print("27mhz  ");
+    }
+    if (m1 == 1) {
+      display.print("144mhz ");
+    }
+    if (m1 == 2) {
+      display.print("433mhz ");
+    }
+    if (m1 == 3) {
+      display.print("868mhz ");
+    }
+    if (m1 == 4) {
+      display.print("915mhz ");
+    }
+    if (m1 == 5) {
+      display.print("1200mhz");
+    }
+    if (m1 == 6) {
+      display.print("2400mhz");
+    }
+    if (m1 == 7) {
+      display.print("5800mhz");
+    }
 
     //display.print(m1);
 
@@ -702,14 +540,8 @@ void menu(void) {
     if (digitalRead(5) == LOW) {
       break;
     }
-
   }
-
-
 }
-
-
-
 
 void menu2(void) {
   display.clearDisplay(); display.display();
@@ -732,7 +564,6 @@ void menu2(void) {
       display.print("MM");
     }
 
-
     //display.print(m1);
 
     display.display();
@@ -750,15 +581,8 @@ void menu2(void) {
     if (digitalRead(5) == LOW) {
       break;
     }
-
   }
-
-
 }
-
-
-
-
 
 void menu3(void) {
   display.clearDisplay(); display.display();
@@ -789,17 +613,8 @@ void menu3(void) {
     if (digitalRead(5) == LOW) {
       break;
     }
-
   }
-
-
 }
-
-
-
-
-
-
 
 //db mw
 void menu4(void) {
@@ -835,212 +650,17 @@ void menu4(void) {
     if (digitalRead(5) == LOW) {
       break;
     }
-
   }
-
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-void testdrawbitmap(const uint8_t *bitmap, uint8_t w, uint8_t h) {
-  uint8_t icons[NUMFLAKES][3];
-
-  // initialize
-  for (uint8_t f = 0; f < NUMFLAKES; f++) {
-    icons[f][XPOS] = random(display.width());
-    icons[f][YPOS] = 0;
-    icons[f][DELTAY] = random(5) + 1;
-
-    Serial.print("x: ");
-    Serial.print(icons[f][XPOS], DEC);
-    Serial.print(" y: ");
-    Serial.print(icons[f][YPOS], DEC);
-    Serial.print(" dy: ");
-    Serial.println(icons[f][DELTAY], DEC);
-  }
-
-  while (1) {
-    // draw each icon
-    for (uint8_t f = 0; f < NUMFLAKES; f++) {
-      display.drawBitmap(icons[f][XPOS], icons[f][YPOS], logo16_glcd_bmp, w, h, WHITE);
-    }
-    display.display();
-    delay(200);
-
-    // then erase it + move it
-    for (uint8_t f = 0; f < NUMFLAKES; f++) {
-      display.drawBitmap(icons[f][XPOS], icons[f][YPOS],  logo16_glcd_bmp, w, h, BLACK);
-      // move it
-      icons[f][YPOS] += icons[f][DELTAY];
-      // if its gone, reinit
-      if (icons[f][YPOS] > display.height()) {
-        icons[f][XPOS] = random(display.width());
-        icons[f][YPOS] = 0;
-        icons[f][DELTAY] = random(5) + 1;
-      }
-    }
-  }
-}
-
-
-void testdrawchar(void) {
-  display.setTextSize(1);
-  display.setTextColor(WHITE);
-  display.setCursor(0, 0);
-
-  for (uint8_t i = 0; i < 168; i++) {
-    if (i == '\n') continue;
-    display.write(i);
-    if ((i > 0) && (i % 21 == 0))
-      display.println();
-  }
-  display.display();
-}
-
-void testdrawcircle(void) {
-  for (int16_t i = 0; i < display.height(); i += 2) {
-    display.drawCircle(display.width() / 2, display.height() / 2, i, WHITE);
-    display.display();
-  }
-}
-
-void testfillrect(void) {
-  uint8_t color = 1;
-  for (int16_t i = 0; i < display.height() / 2; i += 3) {
-    // alternate colors
-    display.fillRect(i, i, display.width() - i * 2, display.height() - i * 2, color % 2);
-    display.display();
-    color++;
-  }
-}
-
-void testdrawtriangle(void) {
-  for (int16_t i = 0; i < min(display.width(), display.height()) / 2; i += 5) {
-    display.drawTriangle(display.width() / 2, display.height() / 2 - i,
-                         display.width() / 2 - i, display.height() / 2 + i,
-                         display.width() / 2 + i, display.height() / 2 + i, WHITE);
-    display.display();
-  }
-}
-
-void testfilltriangle(void) {
-  uint8_t color = WHITE;
-  for (int16_t i = min(display.width(), display.height()) / 2; i > 0; i -= 5) {
-    display.fillTriangle(display.width() / 2, display.height() / 2 - i,
-                         display.width() / 2 - i, display.height() / 2 + i,
-                         display.width() / 2 + i, display.height() / 2 + i, WHITE);
-    if (color == WHITE) color = BLACK;
-    else color = WHITE;
-    display.display();
-  }
-}
-
-void testdrawroundrect(void) {
-  for (int16_t i = 0; i < display.height() / 2 - 2; i += 2) {
-    display.drawRoundRect(i, i, display.width() - 2 * i, display.height() - 2 * i, display.height() / 4, WHITE);
-    display.display();
-  }
-}
-
-void testfillroundrect(void) {
-  uint8_t color = WHITE;
-  for (int16_t i = 0; i < display.height() / 2 - 2; i += 2) {
-    display.fillRoundRect(i, i, display.width() - 2 * i, display.height() - 2 * i, display.height() / 4, color);
-    if (color == WHITE) color = BLACK;
-    else color = WHITE;
-    display.display();
-  }
-}
-
-//void testdrawrect(void) {
-//  for (int16_t i = 0; i < display.height() / 2; i += 2) {
-//    display.drawRect(i, i, display.width() - 2 * i, display.height() - 2 * i, WHITE);
-//    display.display();
-//  }
-//}
-
-void testdrawline() {
-  for (int16_t i = 0; i < display.width(); i += 4) {
-    display.drawLine(0, 0, i, display.height() - 1, WHITE);
-    display.display();
-  }
-  for (int16_t i = 0; i < display.height(); i += 4) {
-    display.drawLine(0, 0, display.width() - 1, i, WHITE);
-    display.display();
-  }
-  delay(250);
-
-  display.clearDisplay();
-  for (int16_t i = 0; i < display.width(); i += 4) {
-    display.drawLine(0, display.height() - 1, i, 0, WHITE);
-    display.display();
-  }
-  for (int16_t i = display.height() - 1; i >= 0; i -= 4) {
-    display.drawLine(0, display.height() - 1, display.width() - 1, i, WHITE);
-    display.display();
-  }
-  delay(250);
-
-  display.clearDisplay();
-  for (int16_t i = display.width() - 1; i >= 0; i -= 4) {
-    display.drawLine(display.width() - 1, display.height() - 1, i, 0, WHITE);
-    display.display();
-  }
-  for (int16_t i = display.height() - 1; i >= 0; i -= 4) {
-    display.drawLine(display.width() - 1, display.height() - 1, 0, i, WHITE);
-    display.display();
-  }
-  delay(250);
-
-  display.clearDisplay();
-  for (int16_t i = 0; i < display.height(); i += 4) {
-    display.drawLine(display.width() - 1, 0, 0, i, WHITE);
-    display.display();
-  }
-  for (int16_t i = 0; i < display.width(); i += 4) {
-    display.drawLine(display.width() - 1, 0, i, display.height() - 1, WHITE);
-    display.display();
-  }
-  delay(250);
-}
-
-
-
-void printDouble( double val, unsigned int precision){
-// prints val with number of decimal places determine by precision
-// NOTE: precision is 1 followed by the number of zeros for the desired number of decimial places
-// example: printDouble( 3.1415, 100); // prints 3.14 (two decimal places)
-
-   Serial.print (int(val));  //prints the int part
-   Serial.print("."); // print the decimal point
-   unsigned int frac;
-   if(val >= 0)
-       frac = (val - int(val)) * precision;
-   else
-       frac = (int(val)- val ) * precision;
-   Serial.print(frac,DEC) ;
 }
 
 void readee(){
- m1 = EEPROM.readByte(2);
- m2 = EEPROM.readByte(3);
- m3 = EEPROM.readByte(4);
- m4 = EEPROM.readByte(5);
-//byte m2 = 2;
-//byte m3 = 30; //30
-//byte m4 = 0;  
+  m1 = EEPROM.readByte(2);
+  m2 = EEPROM.readByte(3);
+  m3 = EEPROM.readByte(4);
+  m4 = EEPROM.readByte(5);
+  //byte m2 = 2;
+  //byte m3 = 30; //30
+  //byte m4 = 0;  
 }
   
 void writeee(){
@@ -1054,36 +674,31 @@ void writeee(){
 }
 
 void readcal(){
-//27
-if (m1==0){aa=EEPROM.readDouble(10);}
-if (m1==0){bb=EEPROM.readDouble(15);}
-//144
-if (m1==1){aa=EEPROM.readDouble(20);}
-if (m1==1){bb=EEPROM.readDouble(25);}
-//433
-if (m1==2){aa=EEPROM.readDouble(30);}
-if (m1==2){bb=EEPROM.readDouble(35);}
-//868
-if (m1==3){aa=EEPROM.readDouble(40);}
-if (m1==3){bb=EEPROM.readDouble(45);}
-//915
-if (m1==4){aa=EEPROM.readDouble(50);}
-if (m1==4){bb=EEPROM.readDouble(55);}
-//1200
-if (m1==5){aa=EEPROM.readDouble(60);}
-if (m1==5){bb=EEPROM.readDouble(65);}
-//2400
-if (m1==6){aa=EEPROM.readDouble(70);}
-if (m1==6){bb=EEPROM.readDouble(75);}
-//5800
-if (m1==7){aa=EEPROM.readDouble(80);}
-if (m1==7){bb=EEPROM.readDouble(85);}
-
-  
+  //27
+  if (m1==0){aa=EEPROM.readDouble(10);}
+  if (m1==0){bb=EEPROM.readDouble(15);}
+  //144
+  if (m1==1){aa=EEPROM.readDouble(20);}
+  if (m1==1){bb=EEPROM.readDouble(25);}
+  //433
+  if (m1==2){aa=EEPROM.readDouble(30);}
+  if (m1==2){bb=EEPROM.readDouble(35);}
+  //868
+  if (m1==3){aa=EEPROM.readDouble(40);}
+  if (m1==3){bb=EEPROM.readDouble(45);}
+  //915
+  if (m1==4){aa=EEPROM.readDouble(50);}
+  if (m1==4){bb=EEPROM.readDouble(55);}
+  //1200
+  if (m1==5){aa=EEPROM.readDouble(60);}
+  if (m1==5){bb=EEPROM.readDouble(65);}
+  //2400
+  if (m1==6){aa=EEPROM.readDouble(70);}
+  if (m1==6){bb=EEPROM.readDouble(75);}
+  //5800
+  if (m1==7){aa=EEPROM.readDouble(80);}
+  if (m1==7){bb=EEPROM.readDouble(85);}
 }
-
-
-
 
 void printDouble2( double val, byte precision){
  // prints val with number of decimal places determine by precision
