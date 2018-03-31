@@ -89,7 +89,7 @@ void setup()   {
 
   //BUZ_ON;
   BUZ_OFF;
-//delay(3000);
+delay(400);
   Serial.begin(9600);
    //чето не всегда стартует
   // by default, we'll generate the high voltage from the 3.3v line internally! (neat!)
@@ -211,7 +211,7 @@ void setup()   {
 
   display.setTextSize(1);
   display.setCursor(30, 45);
-  display.println("v.01 21");
+  display.println("v.01 25");
 
 display.setCursor(0, 57);
 display.print("serial:a000");
@@ -474,7 +474,7 @@ void loop() {
 
 
   display.setCursor(0, 18);
-  display.print("Attn dB ");
+  display.print("Attn dBm");
   display.print(m3);
 
 
@@ -487,7 +487,7 @@ void loop() {
       display.print("mW=");
     }
     if (m4 == 0) {
-      display.print("dB=");
+      display.print("dBm");
     }
 
     display.setTextColor(WHITE, BLACK); // 'inverted' text
@@ -616,7 +616,7 @@ void loop() {
       display.print("Pm=");display.print(Pm);
     }
     if (m4 == 1) {
-      display.print("dB=");display.print(dBm);
+      display.print("dBm");display.print(dBm);
     }
     
     if (sensorValue2>600)
@@ -693,8 +693,8 @@ void menu(void) {
         m1--;
       }
     }
-    if (m1 > 6) {
-      m1 = 6;
+    if (m1 > 7) {
+      m1 = 7;
     }
     if (digitalRead(5) == LOW) {
       break;
