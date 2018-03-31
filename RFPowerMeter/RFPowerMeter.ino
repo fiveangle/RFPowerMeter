@@ -47,7 +47,10 @@ float sensorValue2 = 0;
 double aa;
 double bb;
 
+#define SSD1306_128_64
 
+#undef SSD1306_LCDHEIGHT // to work-around redefinition warning from Adafruit_GFX library define
+#define SSD1306_LCDHEIGHT 64
 
 #define OLED_RESET 4
 Adafruit_SSD1306 display(OLED_RESET);
@@ -80,7 +83,7 @@ static const unsigned char PROGMEM logo16_glcd_bmp[] =
 };
 
 #if (SSD1306_LCDHEIGHT != 64)
-#error("Height incorrect, please fix Adafruit_SSD1306.h!");
+#error("SSD1306_LCDHEIGHT != 64. Height incorrect, please fix Adafruit_SSD1306.h!");
 #endif
 
 void setup()   {

@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+cp RFPowerMeter/RFPowerMeter.ino RFPowerMeter/RFPowerMeter.default

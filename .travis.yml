@@ -1,0 +1,56 @@
+dist: trusty
+sudo: false
+
+language: python
+python:
+  - "2.7"
+
+notifications:
+  email: false
+
+# Cache PlatformIO packages using Travis CI container-based infrastructure
+sudo: false
+cache:
+  pip: true
+  directories:
+  - "~/.platformio"
+
+env:
+  - TEST_PLATFORM="-e BOARD_TYPE_0"
+
+before_install:
+  # Fetch the tag information for the current branch
+  - git fetch origin --tags
+  #
+  # Publish the buildroot script folder
+  - chmod +x ${TRAVIS_BUILD_DIR}/buildroot/bin/*
+  - export PATH=${TRAVIS_BUILD_DIR}/buildroot/bin/:${PATH}
+
+install:
+  # Install PlatformIO core
+  - pip install -U https://github.com/platformio/platformio-core/archive/develop.zip
+  #
+  # Enable warnings-as-errors build option
+  - export PLATFORMIO_BUILD_FLAGS="-Werror"
+
+before_script:
+  # Update PlatformIO packages
+  - platformio update
+  #
+  # Change current working directory to the build dir
+  - cd ${TRAVIS_BUILD_DIR}
+  #
+  # Backup default configuration (used by restore_configs)
+  - backup_configs
+  #
+  # Enable strict CI checking for PlatformIO
+  - export CI=true
+
+script:
+  # Build every config
+  #
+  - restore_configs
+  - opt_enable BOARD_TYPE
+  #
+  - export TEST_PLATFORM="-e BOARD_TYPE_0"
+  - build_pio ${TRAVIS_BUILD_DIR} ${TEST_PLATFORM}

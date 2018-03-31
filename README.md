@@ -15,3 +15,7 @@ https://www.ebay.com/usr/redsonic007
 
 [Original ad from eBay sale of RFPowerMeter](eBayAd.md)
 
+Dependant Libraries:
+        https://github.com/adafruit/Adafruit-GFX-Library
+        https://github.com/adafruit/Adafruit_SSD1306
+        https://github.com/thijse/Arduino-EEPROMEx
