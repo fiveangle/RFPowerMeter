@@ -1,27 +1,26 @@
-  Press Down button and UP Button AND power on (connect to usb)
+Simultaneously press `Down` button and `UP` button and power on (connect to usb)
+
 OLED will show "Call Menu"
 
-if you system can not find drivers- download from here
+If your system can not find drivers- download from here:
 https://github.com/sparkfun/Arduino_Boards/tree/master/sparkfun/avr/signed_driver
 
+Check serial port number on Windows Device manager "SparkFun Pro Micro (COMx)"
 
-download any terminal software
-i use http://www.ayera.com/teraterm/ttpro313.zip
+Using any terminal emulator, open the appropriate serial port (for example: COMx at 57600)
 
-check serial port number on Windows Device manager "SparkFun Pro Micro (COMx)"
+Press `ENTER` once.
 
-Open terminal window COMx at 57600,
-
-press once ENTER.
-
-you see text like
-
+You will see text like:
+```
 !!
-if you can not see text it something wrong - do NOT PRESS ENTER AGAIN!
-disconnect usb and check port number speed and over option.
+```
+If you can not see text it something wrong - DO NOT PRESS ENTER AGAIN!
 
+Disconnect usb and check port number speed again and retry.
 
-51——————
+```
+51â€”â€”â€”â€”â€”â€”
 Reg 10 a27=8.50000
 Reg 15 b27=18.71000
 Reg 20 a144=9.00010
@@ -38,36 +37,35 @@ Reg 70 a2400=8.40000
 Reg 75 b2400=15.48000
 Reg 80 a5800=9.80000
 Reg 85 b5800=18.91000
-——————
+â€”â€”â€”â€”â€”â€”
 Enter Reg
+```
 
+Backup all variable to paper first!
 
-backup all variable to paper first!
-
-
-trim value calculate by formula
+Trim value calculate by formula
       dBm = (sensorValue / aa);
       dBm = (dBm * -1) + bb;
 
-so if you need add +4db to 2400 band you need 
-set reg 75 b2400=15.48000  plus 4 = 19.48
+So if you need to add +4db to 2400 band you need to set reg 75 b2400=15.48000  plus 4 = 19.48
 
-to set register 75 to 19.48 you need
+To set register 75 to 19.48 you need to enter without delay 75 and wait 1 sec
 
-enter without delay 75 and wait 1 sec
-you see
+You will see:
+```
 "reg =75
 Enter call="
+```
 
-enter without delay  19.48 and wait 1 sec
-you see 
+Enter without delay 19.48 and wait 1 sec
+
+You will see:
+```
 "= 19.4800014495
 MENU"
-press once ENTER.
+```
+Press `ENTER` once and check 75 reg value.
 
-and check 75 reg value.
+Some garbage at end can be ignored.
 
-some garbage at end it is normal- it is Arduino ;-)
-
-
-if all ok disconnect usb and check power value
+If all ok disconnect usb and check power value.

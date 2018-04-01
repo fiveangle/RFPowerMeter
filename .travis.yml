@@ -50,7 +50,9 @@ script:
   # Build every config
   #
   - restore_configs
-  - opt_enable BOARD_TYPE
-  #
   - export TEST_PLATFORM="-e BOARD_TYPE_0"
+  - build_pio ${TRAVIS_BUILD_DIR} ${TEST_PLATFORM}
+
+  - restore_configs
+  - export TEST_PLATFORM="-e BOARD_TYPE_1"
   - build_pio ${TRAVIS_BUILD_DIR} ${TEST_PLATFORM}
