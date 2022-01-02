@@ -24,6 +24,7 @@ THX
   BSD license, check license.txt for more information
   All text above, and the splash screen must be included in any redistribution
 *********************************************************************/
+//#define F_CPU 8000000 
 byte m1 = 1;
 byte m2 = 2;
 byte m3 = 30; //30
@@ -57,24 +58,24 @@ Adafruit_SSD1306 display(OLED_RESET);
 
 #define LOGO16_GLCD_HEIGHT 16
 #define LOGO16_GLCD_WIDTH  16
-static const unsigned char PROGMEM logo16_glcd_bmp[] =
-{ B00000000, B11000000,
-  B00000001, B11000000,
-  B00000001, B11000000,
-  B00000011, B11100000,
-  B11110011, B11100000,
-  B11111110, B11111000,
-  B01111110, B11111111,
-  B00110011, B10011111,
-  B00011111, B11111100,
-  B00001101, B01110000,
-  B00011011, B10100000,
-  B00111111, B11100000,
-  B00111111, B11110000,
-  B01111100, B11110000,
-  B01110000, B01110000,
-  B00000000, B00110000
-};
+//static const unsigned char PROGMEM logo16_glcd_bmp[] =
+//{ B00000000, B11000000,
+//  B00000001, B11000000,
+//  B00000001, B11000000,
+//  B00000011, B11100000,
+//  B11110011, B11100000,
+//  B11111110, B11111000,
+//  B01111110, B11111111,
+//  B00110011, B10011111,
+//  B00011111, B11111100,
+//  B00001101, B01110000,
+//  B00011011, B10100000,
+//  B00111111, B11100000,
+//  B00111111, B11110000,
+//  B01111100, B11110000,
+//  B01110000, B01110000,
+//  B00000000, B00110000
+//};
 
 #if (SSD1306_LCDHEIGHT != 64)
 #error("SSD1306_LCDHEIGHT != 64. Height incorrect, please fix Adafruit_SSD1306.h!");
@@ -83,16 +84,24 @@ static const unsigned char PROGMEM logo16_glcd_bmp[] =
 void setup() {
   pinMode(9, OUTPUT);
 
-  //BUZ_ON;
+  BUZ_ON;
+  delay(1);
   BUZ_OFF;
   delay(400);
   Serial.begin(9600);
-  //чето не всегда стартует
-  // by default, we'll generate the high voltage from the 3.3v line internally! (neat!)
-  display.begin(SSD1306_SWITCHCAPVCC, 0x3c);  // initialize with the I2C addr 0x3D (for the 128x64)
+     display.begin(SSD1306_SWITCHCAPVCC, 0x3c);  // initialize with the I2C addr 0x3D (for the 128x64)
+  // init done
+
+  // Show image buffer on the display hardware.
+  // Since the buffer is intialized with an Adafruit splashscreen
+  // internally, this will display the splashscreen.
+  //display.display();
   delay(500);
 
   // Clear the buffer.
+  display.clearDisplay();
+
+
   display.clearDisplay(); display.display();
   display.setTextSize(2);
   display.setTextColor(WHITE);
@@ -103,7 +112,7 @@ void setup() {
 
   display.setTextSize(1);
   display.setCursor(30, 45);
-  display.println("v.01 25");
+  display.println("v.01 26");
 
   display.setCursor(0, 57);
   display.print("serial:a000");
@@ -113,7 +122,7 @@ void setup() {
 
   display.display();
   //display.invertDisplay(true);
-  delay(3000);
+  delay(2000);
   //display.invertDisplay(false);
 
   //button
@@ -132,6 +141,7 @@ void setup() {
   sensorValue = analogRead(A0);
   sensorValue = 1024;
 
+/*
   if (digitalRead(4) == LOW && digitalRead(6) == LOW){
   display.setCursor(0, 0);
   display.clearDisplay();display.println("Call Menu");display.display();
@@ -196,6 +206,7 @@ void setup() {
   }
 }
 
+***/
 
   // Fill Mode
   if (digitalRead(5) == LOW) {
@@ -330,7 +341,7 @@ void loop() {
   }
 
   display.setCursor(0, 18);
-  display.print("Attn dBm");
+  display.print("Attn dB=");
   display.print(m3);
 
   //refresh only end line
@@ -492,7 +503,7 @@ void menu(void) {
   display.print("Set Freq");
   delay (150);
   while (1) {
-    delay (50);
+    delay (100);
 
     display.setCursor(0, 0);
     //display.print(m1);
@@ -608,7 +619,7 @@ void menu3(void) {
       }
     }
     if (m3 > 100) {
-      m3 = 100;
+      m3 = 0;
     }
     if (digitalRead(5) == LOW) {
       break;
@@ -648,6 +659,7 @@ void menu4(void) {
       m4 = 1;
     }
     if (digitalRead(5) == LOW) {
+      delay (150);
       break;
     }
   }
