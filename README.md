@@ -1,4 +1,5 @@
-# RFPowerMeter [![Build Status](https://travis-ci.org/fiveangle/RFPowerMeter.svg?branch=master)](https://travis-ci.org/fiveangle/RFPowerMeter)
+![Alt RFPowerMeter Photo](/RFPowerMeter/RFPowerMeter.jpg?raw=true)
+# RFPowerMeter
 
 Open source software for the Analog Devices AD8319-based Arduino-controlled RFPowerMeter
 
@@ -17,6 +18,7 @@ https://www.ebay.com/usr/redsonic007
 [Original ad from eBay sale of RFPowerMeter](eBayAd.md)
 
 Dependant Libraries:<br>
+https://github.com/adafruit/Adafruit_BusIO.git<br>
 https://github.com/adafruit/Adafruit-GFX-Library<br>
 https://github.com/adafruit/Adafruit_SSD1306<br>
 https://github.com/thijse/Arduino-EEPROMEx<br>
